@@ -1,36 +1,33 @@
 package lojadotutu;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import lojadotutu.model.Celulares;
-import lojadotutu.model.IPhone;
+
+import lojadotutu.Controller.CelularController;
+import lojadotutu.model.Celular;
 import lojadotutu.model.Xiaomi;
+import lojadotutu.model.Iphone;
 
 
 public class MenuEcommerce {
+	
 		
 	public static void main(String[] args) {
-		//TESTE GERAL CELULAR
-		Celulares a1 = new Celulares ("Iphone", 4, 15, 4000.0f);
-		a1.visualizar();
-		//TESTE GERAL XIAOMI
-		Xiaomi x1 = new Xiaomi("Xiaomi 10", 5, 15, 2000.0f, 15);
-		x1.visualizar();
-		//TESTE GERAL IPHONE
-		IPhone i1 = new IPhone("Iphone 10", 6, 17, 4500.0f, 12);
-		i1.visualizar();
+		
+		CelularController celulares = new CelularController();	
 		
 		
+				
 		
-		
-		
-		
-		Scanner	leia = new Scanner(System.in);	
-		int opcao , ram;
+		float caixa = 1000, precoCel = 0;
+		Scanner leia = new Scanner(System.in);
 		String nome;
-		float tela, preco;
+		int opcao, tela, ram, armazenamento, numero = 0, marca;
+		float preco, versaoIos, versaoAndroid;
 		
-		
+						
+		while(true) {
 			System.out.println("*****************************************************");
 			System.out.println("                                                     ");
 			System.out.println("                Eletrônicos do Tutu                  ");
@@ -39,86 +36,148 @@ public class MenuEcommerce {
 			System.out.println("                                                     ");
 			System.out.println("            1 - Novo aparelho                        ");
 			System.out.println("            2 - Listar aparelhos                     ");
-			System.out.println("            3 - Buscar aparelho por nome             ");
-			System.out.println("            4 - Atualizar dados do aparelho          ");
-			System.out.println("            5 - Apagar aparelho                      ");
+			System.out.println("            3 - Buscar aparelho                      ");
+			System.out.println("            4 - Atualizar aparelho                   ");
+			System.out.println("            5 - Apagar celular                       ");
 			System.out.println("            6 - Comprar aparelho                     ");
-			System.out.println("            7 - Atualizar aparelho                   ");
+			System.out.println("            7 - Vender aparelho                      ");
 			System.out.println("            8 - Sair                                 ");
 			System.out.println("                                                     ");
 			System.out.println("*****************************************************");
-			System.out.println("Entre com a opção desejada:                          ");			
-			
+			System.out.println("Entre com a opção desejada:                          ");	
+			System.out.println("                                                     ");
 			
 			try {
-				opcao=leia.nextInt();
-				
-			}catch(InputMismatchException e){
-				System.out.println("\nDigite o número da opção!");
+			opcao = leia.nextInt();
+			}catch (InputMismatchException e) {
+				System.out.println("\n Opção inválida!!!!");
 				leia.nextLine();
 				opcao = 0;
 			}
-
 			if (opcao == 8) {
-				System.out.println("Até a próxima!");
-				leia.close();
+				System.out.println("Obrigado por usar!");
 				System.exit(0);
-	
 			}
+			
+			switch (opcao) {
+			case 1:
+				System.out.println("Novo aparelho \n\n");
+				
+				System.out.println("Digite o nome do aparelho: ");
+				nome = leia.next();
+				System.out.println("Qual o tamanho da tela? ");
+				tela = leia.nextInt();
+				System.out.println("Quanto de RAM o celular possui? ");
+				ram = leia.nextInt();
+				System.out.println("Quanto de armazenamento o celular possui? ");
+				armazenamento = leia.nextInt();
+				System.out.println("Qual o preço do celular? ");
+				preco = leia.nextFloat();
+				numero = celulares.gerarNumero();				
+				
+				do {
+				System.out.println("Qual a marca do celular? 1- Xiaomi 2- Apple");
+				marca = leia.nextInt();
+				}while (marca <1 && marca >2);
+				
+				switch(marca) {
+					case 1 ->{
+						System.out.println("Qual a versão do seu Android?");
+						versaoAndroid = leia.nextFloat();
+						
+						celulares.cadastrar(new Xiaomi(nome, tela, ram, armazenamento,numero, preco, marca,  versaoAndroid));
+					}
+			
+					case 2 ->{
+						System.out.println("Qual a versão do seu Iphone");
+						versaoIos = leia.nextFloat();
+						celulares.cadastrar(new Iphone (nome, tela, ram, armazenamento,numero, preco,marca, versaoIos));
+						break;
+					}
+				  }
+				
+				
+				keyPress();
+				break;
+			case 2:
+				System.out.println("Listar todos os aparelhos \n\n");
+				celulares.listarTodos();
+				
+				
+				
+				keyPress();
+				break;
+			case 3:
+				System.out.println("Consultar aparelho por índice de chegada \n\n");
+				
+				System.out.println("Digite o número do aparelho: ");
+				numero = leia.nextInt();
+				
+				celulares.procurarPorNumero(numero);						
+				
+				
+				keyPress();
+				break;
+			case 4:
+				System.out.println("Atualizar especificações do aparelho \n\n");
+				keyPress();
+				break;
+			case 5:
+				System.out.println("Apagar celular\n\n");
+				keyPress();
+				break;
+			case 6:
+				System.out.println("Comprar aparelho\n\n");
+				System.out.println("Qual o valor do aparelho? ");
+				precoCel = leia.nextFloat();
+				if (precoCel > caixa) {
+					System.out.println("Não é possível comprar o celular, falta valores no caixa!");
+				}else {
+					caixa = caixa - precoCel;
+					System.out.println("O celular foi comprado! Novo valor de caixa: "+ caixa);
+				}
+				keyPress();
+				break;
+			case 7:
+				System.out.println("Vender aparelho\n\n");
+				System.out.println("Qual o preço do celular?");
+				precoCel = leia.nextFloat();
+				
+				if (precoCel > 0){
+					caixa = precoCel + caixa;
+				}
+				System.out.println("Valor atual de caixa: "+ caixa);
+				keyPress();
+				break;
+			default:
+				System.out.println("\nOpção Inválida!\n");
+				keyPress();
+				break;
+		}
+		}
+	}
+		
+		
+		
 
-		switch (opcao) {
-		case 1:
-			System.out.println("\nVamos digitar as informações do aparelho: ");
-			System.out.println("\nQual o nome do aparelho? ");
-			nome = leia.next();
-			System.out.println("\n Quanto de RAM o aparelho possui? ");
-			ram = leia.nextInt();
-			System.out.println("\nQual o tamanho da tela? ");
-			tela = leia.nextFloat();
-			System.out.println("Qual o preço desse aparelho? ");
-			preco = leia.nextFloat();		
-			System.out.println("O produto de nome " + nome + " possui: " + ram + " GB de RAM, tem a tela com " + tela + " cm e, tem seu preço de R$ " + preco);
-			
-			break;
-		
-		
-		case 2: 
-			System.out.println("Esses são os aparelhos ativos na loja no momento: ");
-					
-			break;
-		case 3: 
-			System.out.println("Qual o nome do aparelho que deseja? ");
-			
-			break;
-		
-		case 4:
-			System.out.println("Informe as mudanças do aparelho: ");
-			
-			break;
-			
-		case 5:
-			System.out.println("Digite o nome do aparelho a ser apagado: ");
-			
-			break;
-			
-		case 6:
-			System.out.println("Digite o nome do aparelho a ser comprado: ");
-			
-			break;
-			
-		case 7:
-			System.out.println("Qual aparelho deseja comprar?");
-			
-			break;
-			
-		
-		default: 
-			System.out.println("Por favor, recomece e insira uma opção válida! 1-6");
-			break;
-			
-			
+
+	private static void keyPress() {
+					try {
+				System.out.println("\nPressione Enter para continuar ");
+				System.in.read();
+			}catch (IOException e) {
+				System.out.println("Você pressinou algo além do Enter");
+			}
 		}
 		
+	}
+	
+
+			
+			
+		
+			
+
 		
 		
 		
@@ -126,5 +185,12 @@ public class MenuEcommerce {
 		
 		
 		
-}
-}
+		
+		
+		
+		
+		
+		
+		
+		
+		

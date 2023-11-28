@@ -1,36 +1,19 @@
 package lojadotutu.model;
 
-public class IPhone extends Celulares{
-	
+public class Iphone extends Celular {
 private float versaoIos;
-
-	public IPhone(String nome, int ram, float tela, float preco, float versaoIos) {
-		super(nome, ram, tela, preco);
+	public Iphone(String nome, int tela, int ram, int armazenamento, int numero, float preco, int marca, float versaoIos) {
+		super(nome, tela, ram, armazenamento, numero, preco, marca);
 		
-		this.versaoIos = versaoIos;
 	}
-
 	public float getVersaoIos() {
 		return versaoIos;
 	}
-
 	public void setVersaoIos(float versaoIos) {
 		this.versaoIos = versaoIos;
 	}
-	
-	@Override
-	public boolean atualizarIos(float versaoIos) {
-		if(this.getVersaoIos() > 10) {
-			System.out.println("Não é possível atualizar seu Ios! Ele já está na última versão");
-			return false;
-		}
-		this.setVersaoIos(versaoIos);
-		System.out.println("Seu android foi atualizado para a versão: "+versaoIos);
-		return false;
-	
-}
-	public void visualizar() {
-		super.visualizar();
-		System.out.println("Versão do IOS: "+this.versaoIos);
+public void visualizar() {
+	super.visualizar();
+	System.out.println("Versão do iPhone: " + this.versaoIos);
 }
 }
